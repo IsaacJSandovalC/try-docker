@@ -1,0 +1,15 @@
+# this dockerfile is used for development purpose, can take a new 
+# update from the source code without rebuilding the image
+
+FROM node:18.12.1
+
+# Create app directory
+RUN npm i -g nodemon
+RUN mkdir -p /home/app 
+
+# command to indicate in which route we are going to work by default
+WORKDIR /home/app 
+
+# Install app dependencies
+EXPOSE 3000
+CMD ["nodemon", "index.js"]

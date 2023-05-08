@@ -1,0 +1,36 @@
+version: "3.9"                # version of docker-compose
+services:                     # services to run
+  app-mongo:                  # name of the service
+    build: .                  # build the image from the Dockerfile in the current directory
+    ports:                    # ports to expose
+      - "3000:3000"           # map port 3000 on the host to port 3000 in the container, left port is host port, right port is container port
+    links:                    # links to other services
+      - mongoDB
+
+    # this will create a volume inside the container at /usr/src/app/data
+    # volumes:
+    #   - app-mongo-data:/home/app
+
+  mongoDB:
+    image: mongo:latest       # use the latest mongo image from docker hub
+    ports:                    # ports to expose
+      - "27017:27017"
+    environment:              # environment variables
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+
+    # the only way to create a volume inside our containers is to create 
+    # another volume with the same name at the service level.
+    # this will create a volume inside the container at /data/db
+
+    volumes:                  
+      - mongo-data:/data/db   # mount the volume mongo-data to /data/db in the container
+      # mysql -> /var/lib/mysql
+      # postgres -> /var/lib/postgresql/data
+      # mongo -> /data/db
+      # redis -> /data
+
+
+volumes:                      # volumes to create
+  mongo-data:                 # name of the volume
+  app-mongo-data:             # name of the volume
